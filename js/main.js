@@ -73,3 +73,109 @@ setActiveLink();
 document.querySelectorAll("#year").forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
+
+// Gallery rendering and lightbox
+const galleryImages = [
+  "008_10y-jubi_gesamt_formell.jpg",
+  "019_10y-jubi_gesamt_fun.jpg",
+  "023_10y-jubi-t-shirt.jpg",
+  "138_10y-jubi_linus_komisch.jpg",
+  "156_10y-jubi-pauke.jpg",
+  "162_10y-jubi-statute.jpg",
+  "165_10y-jubi_blache.jpg",
+  "207_10y-jubi-auftritt.jpg",
+  "219_10y-jubi-remo-spielt.jpg",
+  "220_10y-jubi-t-shirt-back.jpg",
+  "grundopenaire_2022_01.jpeg",
+  "grundopenaire_2022_02.jpeg"
+];
+
+const galleryGrid = document.getElementById("gallery-grid");
+const lightbox = document.getElementById("gallery-lightbox");
+const lightboxImage = document.getElementById("lightbox-image");
+const lightboxPrev = document.getElementById("lightbox-prev");
+const lightboxNext = document.getElementById("lightbox-next");
+const lightboxClose = document.getElementById("lightbox-close");
+let activeGalleryIndex = 0;
+let touchStartX = 0;
+
+const updateLightboxImage = () => {
+  const src = `images/gallery/${galleryImages[activeGalleryIndex]}`;
+  lightboxImage.src = src;
+  lightboxImage.alt = `Galeriebild ${activeGalleryIndex + 1} von ${galleryImages.length}`;
+};
+
+const openLightbox = (index) => {
+  activeGalleryIndex = index;
+  updateLightboxImage();
+  lightbox.showModal();
+};
+
+const stepLightbox = (step) => {
+  activeGalleryIndex = (activeGalleryIndex + step + galleryImages.length) % galleryImages.length;
+  updateLightboxImage();
+};
+
+if (galleryGrid && lightbox && lightboxImage) {
+  galleryImages.forEach((filename, index) => {
+    const figure = document.createElement("figure");
+    figure.className = "gallery-item";
+
+    const img = document.createElement("img");
+    img.src = `images/gallery/${filename}`;
+    img.alt = `Galeriebild ${index + 1}`;
+    img.loading = "lazy";
+    img.addEventListener("click", () => openLightbox(index));
+
+    figure.appendChild(img);
+    galleryGrid.appendChild(figure);
+  });
+
+  lightboxPrev?.addEventListener("click", () => stepLightbox(-1));
+  lightboxNext?.addEventListener("click", () => stepLightbox(1));
+  lightboxClose?.addEventListener("click", () => lightbox.close());
+
+  lightbox.addEventListener("click", (event) => {
+    const clickedOutside = event.target === lightbox;
+    if (clickedOutside) lightbox.close();
+  });
+
+  lightbox.addEventListener("touchstart", (event) => {
+    touchStartX = event.changedTouches[0].clientX;
+  });
+
+  lightbox.addEventListener("touchend", (event) => {
+    const deltaX = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(deltaX) < 40) return;
+    stepLightbox(deltaX > 0 ? -1 : 1);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!lightbox.open) return;
+    if (event.key === "ArrowLeft") stepLightbox(-1);
+    if (event.key === "ArrowRight") stepLightbox(1);
+  });
+}
+
+// Simple captcha validation for booking form
+const bookingForm = document.querySelector(".booking-form");
+const captchaQuestion = document.getElementById("captcha-question");
+const captchaInput = document.getElementById("captcha");
+
+if (bookingForm && captchaQuestion && captchaInput) {
+  const a = Math.floor(Math.random() * 10) + 2;
+  const b = Math.floor(Math.random() * 10) + 1;
+  const result = a + b;
+
+  captchaQuestion.textContent = `Captcha: Was ist ${a} + ${b}?`;
+
+  bookingForm.addEventListener("submit", (event) => {
+    if (Number(captchaInput.value) !== result) {
+      event.preventDefault();
+      captchaInput.setCustomValidity("Bitte loese die Captcha-Aufgabe korrekt.");
+      captchaInput.reportValidity();
+      return;
+    }
+    captchaInput.setCustomValidity("");
+  });
+}

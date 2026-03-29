@@ -181,15 +181,7 @@
       <div class="container">
         <p class="overline">Galerie</p>
         <h2>Momente von Bühne, Fest und Backstage.</h2>
-        <!-- Add or remove gallery items by duplicating/removing figure blocks below. -->
-        <div class="gallery-grid">
-          <figure class="gallery-item"><img src="images/gallery/008_10y-jubi_gesamt_formell.jpg" alt="Bandportrait formell"></figure>
-          <figure class="gallery-item"><img src="images/gallery/019_10y-jubi_gesamt_fun.jpg" alt="Bandportrait mit Humor"></figure>
-          <figure class="gallery-item"><img src="images/gallery/138_10y-jubi_linus_komisch.jpg" alt="Humorvoller Moment mit Linus"></figure>
-          <figure class="gallery-item"><img src="images/gallery/023_10y-jubi-t-shirt" alt="Band im Gruppenbild mit T-Shirt"></figure>
-          <figure class="gallery-item"><img src="images/032_10y-jubi_gesamt_hinten.jpg" alt="Band rueckseitig auf der Buehne"></figure>
-          <figure class="gallery-item"><img src="images/070_10y-jubi_tobias_zemp.jpg" alt="Tobias Zemp mit Instrument"></figure>
-        </div>
+        <div class="gallery-grid" id="gallery-grid" aria-live="polite"></div>
       </div>
     </section>
     <!-- END SECTION: GALLERY -->
@@ -206,8 +198,11 @@
       </div>
 
       <div class="container booking-wrap">
-        <!-- Replace form action URL with your future backend or form service endpoint. -->
-        <form class="booking-form" action="#" method="post">
+        <!-- This form uses FormSubmit to forward requests to the configured e-mail address. -->
+        <form class="booking-form" action="https://formsubmit.co/koch_manuel@hotmail.com" method="post">
+          <input type="hidden" name="_subject" value="Neue Booking-Anfrage | The Cérvilätz">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="text" name="_honey" class="hidden-field" tabindex="-1" autocomplete="off">
           <div class="form-grid">
             <div class="form-field">
               <label for="name">Name *</label>
@@ -268,6 +263,11 @@
               <input id="privacy" name="privacy" type="checkbox" required>
               <label for="privacy">Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Angaben zu. *</label>
             </div>
+            <div class="form-field form-field-full captcha-field">
+              <p class="captcha-question" id="captcha-question">Captcha wird geladen …</p>
+              <label for="captcha">Bitte Ergebnis eingeben *</label>
+              <input id="captcha" name="captcha" type="number" inputmode="numeric" required>
+            </div>
           </div>
           <button type="submit" class="btn btn-primary">Anfrage senden</button>
         </form>
@@ -286,6 +286,13 @@
     </section>
     <!-- END SECTION: CLOSING IMAGE BANNER -->
   </main>
+
+  <dialog class="gallery-lightbox" id="gallery-lightbox" aria-label="Bildansicht">
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Galerie schliessen">&times;</button>
+    <button type="button" class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Vorheriges Bild">&#10094;</button>
+    <img id="lightbox-image" src="" alt="">
+    <button type="button" class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Naechstes Bild">&#10095;</button>
+  </dialog>
 
   <!-- SECTION: FOOTER -->
   <footer class="site-footer">

@@ -262,9 +262,9 @@
               <label for="description">Beschreibung</label>
               <textarea id="description" name="description" rows="5" placeholder="Infos zu Anlass, Ablauf, Wünsche, Versärkung nötig?, Anzahl Sets, Dauer der Sets?..."></textarea>
             </div>
-            <div class="form-field form-field-full recaptcha-field">
-              <p class="recaptcha-info">Spam-Schutz mit reCAPTCHA *</p>
-              <div class="g-recaptcha" data-sitekey="RECAPTCHA_SITE_KEY"></div>
+            <div class="form-field form-field-full captcha-field">
+              <label for="captcha-answer" id="captcha-question">Spam-Schutz: Rechnung wird geladen ... *</label>
+              <input id="captcha-answer" name="captcha-answer" type="number" inputmode="numeric" required>
             </div>
           </div>
           <button type="submit" class="btn btn-primary">Anfrage senden</button>
@@ -330,7 +330,6 @@
   </footer>
   <!-- END SECTION: FOOTER -->
 
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="js/main.js"></script>
 </body>
 </html>

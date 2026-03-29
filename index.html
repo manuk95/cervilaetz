@@ -66,6 +66,10 @@
       <div class="container grid-2 about-grid">
         <div class="about-logo-wrap">
           <img src="images/Cervilaetz_Logo_negativ_quadrat.jpg" alt="The Cérvilätz Logo">
+          <blockquote class="band-quote">
+            <p>„Musik sagt mehr als 1000 Worte.“</p>
+            <cite>– Matthias Felder, bei jedem Auftritt</cite>
+          </blockquote>
         </div>
         <div>
           <p class="overline">Band</p>
@@ -201,7 +205,6 @@
         <!-- This form uses FormSubmit to forward requests to the configured e-mail address. -->
         <form class="booking-form" action="https://formsubmit.co/koch_manuel@hotmail.com" method="post">
           <input type="hidden" name="_subject" value="Neue Booking-Anfrage | The Cérvilätz">
-          <input type="hidden" name="_captcha" value="false">
           <input type="text" name="_honey" class="hidden-field" tabindex="-1" autocomplete="off">
           <div class="form-grid">
             <div class="form-field">
@@ -259,14 +262,9 @@
               <label for="description">Beschreibung</label>
               <textarea id="description" name="description" rows="5" placeholder="Infos zu Anlass, Ablauf, Wünsche, Versärkung nötig?, Anzahl Sets, Dauer der Sets?..."></textarea>
             </div>
-            <div class="form-field form-field-full checkbox-field">
-              <input id="privacy" name="privacy" type="checkbox" required>
-              <label for="privacy">Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Angaben zu. *</label>
-            </div>
-            <div class="form-field form-field-full captcha-field">
-              <p class="captcha-question" id="captcha-question">Captcha wird geladen …</p>
-              <label for="captcha">Bitte Ergebnis eingeben *</label>
-              <input id="captcha" name="captcha" type="number" inputmode="numeric" required>
+            <div class="form-field form-field-full recaptcha-field">
+              <p class="recaptcha-info">Spam-Schutz mit reCAPTCHA *</p>
+              <div class="g-recaptcha" data-sitekey="RECAPTCHA_SITE_KEY"></div>
             </div>
           </div>
           <button type="submit" class="btn btn-primary">Anfrage senden</button>
@@ -322,7 +320,6 @@
         <h4>Rechtliches</h4>
         <ul>
           <li><a href="impressum.html">Impressum</a></li>
-          <li><a href="datenschutz.html">Datenschutz</a></li>
         </ul>
       </div>
     </div>
@@ -333,6 +330,7 @@
   </footer>
   <!-- END SECTION: FOOTER -->
 
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="js/main.js"></script>
 </body>
 </html>

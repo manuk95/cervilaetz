@@ -157,25 +157,18 @@ if (galleryGrid && lightbox && lightboxImage) {
   });
 }
 
-// Simple captcha validation for booking form
+// reCAPTCHA validation for booking form
 const bookingForm = document.querySelector(".booking-form");
-const captchaQuestion = document.getElementById("captcha-question");
-const captchaInput = document.getElementById("captcha");
 
-if (bookingForm && captchaQuestion && captchaInput) {
-  const a = Math.floor(Math.random() * 10) + 2;
-  const b = Math.floor(Math.random() * 10) + 1;
-  const result = a + b;
-
-  captchaQuestion.textContent = `Captcha: Was ist ${a} + ${b}?`;
-
+if (bookingForm) {
   bookingForm.addEventListener("submit", (event) => {
-    if (Number(captchaInput.value) !== result) {
+    const hasRecaptcha = typeof window.grecaptcha !== "undefined";
+    if (!hasRecaptcha) return;
+
+    const token = window.grecaptcha.getResponse();
+    if (!token) {
       event.preventDefault();
-      captchaInput.setCustomValidity("Bitte loese die Captcha-Aufgabe korrekt.");
-      captchaInput.reportValidity();
-      return;
+      alert("Bitte bestaetige zuerst, dass du kein Roboter bist.");
     }
-    captchaInput.setCustomValidity("");
   });
 }

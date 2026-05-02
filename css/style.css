@@ -364,6 +364,29 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 
 .event-card p { margin-bottom: 0; }
 
+
+.event-grid-title {
+  margin: var(--space-5) 0 var(--space-3);
+}
+
+.public-gigs-card {
+  margin-top: var(--space-4);
+}
+
+.public-gigs-intro {
+  margin-bottom: var(--space-2);
+}
+
+.public-gigs-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.public-gigs-list li + li {
+  margin-top: 0.4rem;
+}
+
+
 /* =========================================
    SECTION: TIMELINE
    ========================================= */

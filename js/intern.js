@@ -8,9 +8,8 @@ const INTERNAL_SESSION_KEY = "cervilaetz-internal-unlocked";
 const GIG_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1hOgHLZSz79FAb-wgghb69LDW8zpJLEEJdj6MnAR_Uc4/export?format=csv&gid=0";
 const SETLIST_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQt1344ZagywaSeOmg-hpkp-TOOOhLYqkxCXlRq1UGzlHhQRv7rqEAyRDrPVxVTEY0t08MjTWZAXSrg/pub?output=csv";
 
-// Nach dem Deployment von Google Apps Script hier die Web-App-URL einfügen.
-// Beispiel: const GUESTBOOK_API_URL = "https://script.google.com/macros/s/AKfycb.../exec";
-const GUESTBOOK_API_URL = "HIER_APPS_SCRIPT_WEB_APP_URL_EINFÜGEN";
+// Google-Apps-Script-Web-App-URL für das interne Notizbuch.
+const GUESTBOOK_API_URL = "https://script.google.com/macros/s/AKfycbyvXUlOpFNWZ3jejJhl1_KUgjzGbOrtUkW7AdZHympbjW7a5hTNzpwUyucxUyCpJnFF/exec";
 
 const loginSection = document.getElementById("login-section");
 const loginForm = document.getElementById("login-form");
@@ -352,7 +351,7 @@ const renderGuestbookEntries = (entries) => {
   if (entries.length === 0) {
     const empty = document.createElement("p");
     empty.className = "guestbook-empty";
-    empty.textContent = "Noch keine Gästebuch-Einträge vorhanden.";
+    empty.textContent = "Noch keine Notizen vorhanden.";
     guestbookList.appendChild(empty);
     return;
   }
@@ -382,7 +381,7 @@ const renderGuestbookEntries = (entries) => {
 
 const loadGuestbookEntries = async () => {
   if (!isGuestbookConfigured()) return;
-  setMessage(guestbookMessage, "Lade Gästebuch-Einträge...", "loading");
+  setMessage(guestbookMessage, "Lade Notizbuch-Einträge...", "loading");
 
   try {
     const response = await fetch(GUESTBOOK_API_URL, { cache: "no-store" });
@@ -392,7 +391,7 @@ const loadGuestbookEntries = async () => {
     renderGuestbookEntries(normalizeGuestbookEntries(payload));
     setMessage(guestbookMessage, "");
   } catch (error) {
-    setMessage(guestbookMessage, "Die Gästebuch-Einträge konnten nicht geladen werden.", "error");
+    setMessage(guestbookMessage, "Die Notizbuch-Einträge konnten nicht geladen werden.", "error");
   }
 };
 

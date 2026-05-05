@@ -43,13 +43,17 @@
    SECTION: BASE STYLES
    ========================================= */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 body {
   margin: 0;
   font-family: var(--font-body);
   background: var(--color-bg);
   color: var(--color-text);
   line-height: 1.65;
+  overflow-x: hidden;
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
@@ -643,6 +647,12 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 /* =========================================
    SECTION: FOOTER
    ========================================= */
+.site-header,
+.site-footer {
+  width: 100%;
+  max-width: 100vw;
+}
+
 .site-footer {
   background: var(--color-charcoal);
   color: var(--color-offwhite);
@@ -754,6 +764,7 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 .internal-shell {
   display: grid;
   gap: var(--space-4);
+  min-width: 0;
 }
 
 .internal-intro {
@@ -769,6 +780,7 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 }
 
 .internal-card {
+  min-width: 0;
   padding: clamp(1.25rem, 4vw, var(--space-6));
 }
 
@@ -779,6 +791,7 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 .internal-content {
   display: grid;
   gap: var(--space-4);
+  min-width: 0;
 }
 
 .internal-toolbar,
@@ -852,11 +865,13 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 .table-stack {
   display: grid;
   gap: var(--space-5);
+  min-width: 0;
 }
 
 .table-subsection {
   display: grid;
   gap: var(--space-2);
+  min-width: 0;
 }
 
 .table-subsection h3 {
@@ -865,6 +880,7 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 }
 
 .responsive-table {
+  max-width: 100%;
   overflow-x: auto;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -929,6 +945,7 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 .guestbook-list {
   display: grid;
   gap: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .guestbook-entry {

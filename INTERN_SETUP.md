@@ -40,9 +40,9 @@ const SETLIST_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQt1344
 
 Falls die Set-List später in ein anderes Sheet verschoben wird, muss diese Konstante angepasst werden.
 
-## 3. Gästebuch-Google-Apps-Script erstellen
+## 3. Notizbuch-Google-Apps-Script erstellen
 
-Das Gästebuch speichert dauerhaft in diesem separaten Google Sheet:
+Das Notizbuch speichert dauerhaft in diesem separaten Google Sheet:
 
 <https://docs.google.com/spreadsheets/d/14S222oPgGObQJtP_dkkKX-XtEPlU1ZeSI7dnb0SvFAs/edit?usp=sharing>
 

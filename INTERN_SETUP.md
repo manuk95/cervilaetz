@@ -24,7 +24,23 @@ const GIG_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1hOgHLZSz79FAb
 
 Falls ein anderes Tabellenblatt genutzt wird, muss die `gid` in dieser Konstante angepasst werden. Es werden keine Google API Keys und keine OAuth-Logins verwendet.
 
-## 2. Gästebuch-Google-Apps-Script erstellen
+Die Gig-Tabelle muss eine Spalte mit der Überschrift `Datum` enthalten. Bevorstehende Gigs werden nach Datum aufsteigend angezeigt; vergangene Gigs erscheinen darunter in einer separaten Tabelle, mit den neusten vergangenen Gigs zuerst.
+
+## 2. Set-List-Google-Sheet
+
+Die interne Seite lädt zusätzlich diese veröffentlichte Set-List als CSV:
+
+<https://docs.google.com/spreadsheets/d/e/2PACX-1vQt1344ZagywaSeOmg-hpkp-TOOOhLYqkxCXlRq1UGzlHhQRv7rqEAyRDrPVxVTEY0t08MjTWZAXSrg/pub?output=csv>
+
+Die URL ist in `js/intern.js` hinterlegt:
+
+```js
+const SETLIST_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQt1344ZagywaSeOmg-hpkp-TOOOhLYqkxCXlRq1UGzlHhQRv7rqEAyRDrPVxVTEY0t08MjTWZAXSrg/pub?output=csv";
+```
+
+Falls die Set-List später in ein anderes Sheet verschoben wird, muss diese Konstante angepasst werden.
+
+## 3. Gästebuch-Google-Apps-Script erstellen
 
 Das Gästebuch speichert dauerhaft in diesem separaten Google Sheet:
 
@@ -50,7 +66,7 @@ Nach dem Eintragen der URL muss GitHub Pages neu deployed werden, damit das Gäs
 
 Solange die Web-App-URL noch nicht eingetragen ist, zeigt die interne Seite einen neutralen Hinweis an und das Gästebuch-Formular bleibt deaktiviert.
 
-## 3. Sicherheitshinweis
+## 4. Sicherheitshinweis
 
 Der Passwortschutz ist nur clientseitig und nicht sicher. Das Passwort ist im JavaScript auffindbar. Für wirklich vertrauliche Daten wäre GitHub Pages mit clientseitigem Passwortschutz nicht ausreichend.
 

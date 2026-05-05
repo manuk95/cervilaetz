@@ -32,7 +32,7 @@
         <div class="internal-intro">
           <p class="overline">Intern</p>
           <h1>Interner Bereich</h1>
-          <p>Gig-Infos und Notizen für The Cérvilätz.</p>
+          <p>Gig-Infos und Gästebuch für The Cérvilätz. Der Zugang ist nur ein einfacher Sichtschutz für interne Informationen.</p>
         </div>
 
         <section class="internal-card login-card" id="login-section" aria-labelledby="login-title">
@@ -62,24 +62,23 @@
               </div>
               <button class="btn btn-secondary btn-dark" id="refresh-gigs" type="button">Neu laden</button>
             </div>
-            <p class="helper-text">Die Daten werden aus einem Google Sheet geladen.</p>
+            <p class="helper-text">Die Daten werden direkt aus dem Google Sheet geladen. Die erste Zeile wird als Tabellenkopf verwendet. Gigs werden nach der Spalte <strong>Datum</strong> sortiert: bevorstehende zuerst, vergangene separat darunter.</p>
             <div class="table-status" id="gigs-status" role="status" aria-live="polite">Lade Daten...</div>
-            <div class="responsive-table" id="gigs-table-wrap" hidden></div>
+            <div class="table-stack" id="gigs-table-wrap" hidden></div>
           </section>
 
           <section class="internal-card" aria-labelledby="guestbook-title">
             <div class="section-head-row">
               <div>
-                <p class="overline">Notzibuch</p>
-                <div class="guestbook-list" id="guestbook-list" aria-live="polite"></div>
-                <h2 id="guestbook-title">Notiz hinzufügen</h2>
+                <p class="overline">Gästebuch</p>
+                <h2 id="guestbook-title">Nachrichten</h2>
               </div>
               <button class="btn btn-secondary btn-dark" id="refresh-guestbook" type="button">Einträge laden</button>
             </div>
-            <p class="helper-text">Schreibt eine kurze Notiz. Die neusten Einträge erscheinen oben.</p>
+            <p class="helper-text">Schreibt eine kurze Nachricht. Die neusten Einträge erscheinen oben.</p>
 
             <div class="guestbook-notice" id="guestbook-config-notice" hidden>
-              Das Notizbuch ist vorbereitet. Nach dem Deployment des Google Apps Scripts muss die Web-App-URL in <code>js/intern.js</code> bei <code>GUESTBOOK_API_URL</code> eingetragen werden.
+              Das Gästebuch ist vorbereitet. Nach dem Deployment des Google Apps Scripts muss die Web-App-URL in <code>js/intern.js</code> bei <code>GUESTBOOK_API_URL</code> eingetragen werden.
             </div>
 
             <form class="internal-form guestbook-form" id="guestbook-form">
@@ -95,11 +94,24 @@
               <p class="form-message" id="guestbook-message" role="status" aria-live="polite"></p>
             </form>
 
-            
+            <div class="guestbook-list" id="guestbook-list" aria-live="polite"></div>
+          </section>
+
+          <section class="internal-card" aria-labelledby="setlist-title">
+            <div class="section-head-row">
+              <div>
+                <p class="overline">Set-List</p>
+                <h2 id="setlist-title">Aktuelle Set-List</h2>
+              </div>
+              <button class="btn btn-secondary btn-dark" id="refresh-setlist" type="button">Neu laden</button>
+            </div>
+            <p class="helper-text">Die Set-List wird aus dem veröffentlichten Google Sheet geladen und responsiv dargestellt.</p>
+            <div class="table-status" id="setlist-status" role="status" aria-live="polite">Lade Set-List...</div>
+            <div class="responsive-table" id="setlist-table-wrap" hidden></div>
           </section>
 
           <section class="internal-note" aria-label="Sicherheitshinweis">
-            <strong>Hinweis:</strong> Dieser Passwortschutz ist nur clientseitig und könnte ausgelesen werden.
+            <strong>Hinweis:</strong> Dieser Passwortschutz ist nur clientseitig und nicht sicher. Das Passwort ist im JavaScript auffindbar. Für wirklich vertrauliche Daten ist GitHub Pages mit clientseitigem Passwortschutz nicht ausreichend.
           </section>
         </div>
       </div>

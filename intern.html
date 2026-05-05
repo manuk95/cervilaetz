@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interner Bereich von The Cérvilätz">
+  <title>Intern | The Cérvilätz</title>
+  <link rel="icon" type="image/jpeg" href="images/Cervilaetz_Logo_negativ_quadrat.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Direkt zum Inhalt springen</a>
+
+  <!-- SECTION: SIMPLE HEADER -->
+  <header class="site-header site-header-solid" id="site-header">
+    <nav class="container nav" aria-label="Seitennavigation">
+      <a class="brand" href="index.html#top" aria-label="Zur Startseite">
+        <img src="images/Cervilaetz_Logo_negativ_quadrat.jpg" alt="The Cérvilätz Logo">
+        <span>The Cérvilätz</span>
+      </a>
+      <a class="btn btn-primary" href="index.html#top">Zur Startseite</a>
+    </nav>
+  </header>
+  <!-- END SECTION: SIMPLE HEADER -->
+
+  <main class="internal-main" id="main-content">
+    <section class="section internal-hero">
+      <div class="container internal-shell">
+        <div class="internal-intro">
+          <p class="overline">Intern</p>
+          <h1>Interner Bereich</h1>
+          <p>Gig-Infos und Notizen für The Cérvilätz.</p>
+        </div>
+
+        <section class="internal-card login-card" id="login-section" aria-labelledby="login-title">
+          <h2 id="login-title">Zugang sperren / entsperren</h2>
+          <p>Bitte Passwort eingeben, um den internen Bereich anzuzeigen.</p>
+          <form class="internal-form" id="login-form">
+            <div class="form-field">
+              <label for="internal-password">Passwort</label>
+              <input id="internal-password" name="password" type="password" autocomplete="current-password" required>
+            </div>
+            <button class="btn btn-primary" type="submit">Entsperren</button>
+            <p class="form-message" id="login-message" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <div class="internal-content" id="internal-content" hidden>
+          <div class="internal-toolbar">
+            <p class="internal-status">Interner Bereich entsperrt.</p>
+            <button class="btn btn-secondary btn-lock" id="lock-button" type="button">Abmelden / sperren</button>
+          </div>
+
+          <section class="internal-card" aria-labelledby="gig-table-title">
+            <div class="section-head-row">
+              <div>
+                <p class="overline">Gigs & Infos</p>
+                <h2 id="gig-table-title">Interne Übersicht</h2>
+              </div>
+              <button class="btn btn-secondary btn-dark" id="refresh-gigs" type="button">Neu laden</button>
+            </div>
+            <p class="helper-text">Die Daten werden aus einem Google Sheet geladen.</p>
+            <div class="table-status" id="gigs-status" role="status" aria-live="polite">Lade Daten...</div>
+            <div class="table-stack" id="gigs-table-wrap" hidden></div>
+          </section>
+
+          <section class="internal-card" aria-labelledby="guestbook-title">
+            <div class="section-head-row">
+              <div>
+                <p class="overline">Notizbuch</p>
+                <h2 id="guestbook-title">Notiz hinzufügen</h2>
+              </div>
+              <button class="btn btn-secondary btn-dark" id="refresh-guestbook" type="button">Einträge laden</button>
+            </div>
+            <p class="helper-text">Schreibt eine kurze Notiz. Die neusten Einträge erscheinen oben.</p>
+
+            <div class="guestbook-list" id="guestbook-list" aria-live="polite"></div>
+
+            <div class="guestbook-notice" id="guestbook-config-notice" hidden>
+              Das Notizbuch ist vorbereitet. Nach dem Deployment des Google Apps Scripts muss die Web-App-URL in <code>js/intern.js</code> bei <code>GUESTBOOK_API_URL</code> eingetragen werden.
+            </div>
+
+            <form class="internal-form guestbook-form" id="guestbook-form">
+              <div class="form-field">
+                <label for="guestbook-name">Name</label>
+                <input id="guestbook-name" name="name" type="text" maxlength="80" autocomplete="name" placeholder="Dein Name">
+              </div>
+              <div class="form-field form-field-full">
+                <label for="guestbook-comment">Kommentar *</label>
+                <textarea id="guestbook-comment" name="comment" maxlength="1000" rows="5" required placeholder="Deine Nachricht"></textarea>
+              </div>
+              <button class="btn btn-primary" id="guestbook-submit" type="submit">Senden</button>
+              <p class="form-message" id="guestbook-message" role="status" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="internal-card" aria-labelledby="setlist-title">
+            <div class="section-head-row">
+              <div>
+                <p class="overline">Set-List</p>
+                <h2 id="setlist-title">Aktuelle Set-List</h2>
+              </div>
+              <button class="btn btn-secondary btn-dark" id="refresh-setlist" type="button">Neu laden</button>
+            </div>
+            <p class="helper-text">Die Set-List wird aus dem veröffentlichten Google Sheet geladen und responsiv dargestellt.</p>
+            <div class="table-status" id="setlist-status" role="status" aria-live="polite">Lade Set-List...</div>
+            <div class="responsive-table" id="setlist-table-wrap" hidden></div>
+          </section>
+
+          <section class="internal-note" aria-label="Sicherheitshinweis">
+            <strong>Hinweis:</strong> Dieser Passwortschutz ist nur clientseitig und könnte ausgelesen werden.
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SECTION: FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <small>&copy; <span id="year"></span> The Cérvilätz.</small>
+      <a href="index.html#top">Zur Hauptseite</a>
+    </div>
+  </footer>
+  <!-- END SECTION: FOOTER -->
+
+  <script src="js/main.js"></script>
+  <script src="js/intern.js"></script>
+</body>
+</html>

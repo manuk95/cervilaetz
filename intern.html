@@ -32,7 +32,7 @@
         <div class="internal-intro">
           <p class="overline">Intern</p>
           <h1>Interner Bereich</h1>
-          <p>Gig-Infos und Gästebuch für The Cérvilätz. Der Zugang ist nur ein einfacher Sichtschutz für interne Informationen.</p>
+          <p>Gig-Infos und Notizen für The Cérvilätz.</p>
         </div>
 
         <section class="internal-card login-card" id="login-section" aria-labelledby="login-title">
@@ -62,7 +62,7 @@
               </div>
               <button class="btn btn-secondary btn-dark" id="refresh-gigs" type="button">Neu laden</button>
             </div>
-            <p class="helper-text">Die Daten werden direkt aus dem Google Sheet geladen. Die erste Zeile wird als Tabellenkopf verwendet.</p>
+            <p class="helper-text">Die Daten werden aus einem Google Sheet geladen.</p>
             <div class="table-status" id="gigs-status" role="status" aria-live="polite">Lade Daten...</div>
             <div class="responsive-table" id="gigs-table-wrap" hidden></div>
           </section>
@@ -70,15 +70,15 @@
           <section class="internal-card" aria-labelledby="guestbook-title">
             <div class="section-head-row">
               <div>
-                <p class="overline">Gästebuch</p>
-                <h2 id="guestbook-title">Nachrichten</h2>
+                <p class="overline">Kommentare</p>
+                <h2 id="guestbook-title">Notizen</h2>
               </div>
               <button class="btn btn-secondary btn-dark" id="refresh-guestbook" type="button">Einträge laden</button>
             </div>
-            <p class="helper-text">Schreibt eine kurze Nachricht. Die neusten Einträge erscheinen oben.</p>
+            <p class="helper-text">Schreibt eine kurze Notiz. Die neusten Einträge erscheinen oben.</p>
 
             <div class="guestbook-notice" id="guestbook-config-notice" hidden>
-              Das Gästebuch ist vorbereitet. Nach dem Deployment des Google Apps Scripts muss die Web-App-URL in <code>js/intern.js</code> bei <code>GUESTBOOK_API_URL</code> eingetragen werden.
+              Das Notizbuch ist vorbereitet. Nach dem Deployment des Google Apps Scripts muss die Web-App-URL in <code>js/intern.js</code> bei <code>GUESTBOOK_API_URL</code> eingetragen werden.
             </div>
 
             <form class="internal-form guestbook-form" id="guestbook-form">

@@ -9,7 +9,7 @@ const GIG_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1hOgHLZSz79FAb
 
 // Nach dem Deployment von Google Apps Script hier die Web-App-URL einfügen.
 // Beispiel: const GUESTBOOK_API_URL = "https://script.google.com/macros/s/AKfycb.../exec";
-const GUESTBOOK_API_URL = "HIER_APPS_SCRIPT_WEB_APP_URL_EINFÜGEN";
+const GUESTBOOK_API_URL = "https://script.google.com/macros/s/AKfycbyvXUlOpFNWZ3jejJhl1_KUgjzGbOrtUkW7AdZHympbjW7a5hTNzpwUyucxUyCpJnFF/exec";
 
 const loginSection = document.getElementById("login-section");
 const loginForm = document.getElementById("login-form");

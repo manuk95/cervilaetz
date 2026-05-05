@@ -70,8 +70,9 @@
           <section class="internal-card" aria-labelledby="guestbook-title">
             <div class="section-head-row">
               <div>
-                <p class="overline">Kommentare</p>
-                <h2 id="guestbook-title">Notizen</h2>
+                <p class="overline">Notzibuch</p>
+                <div class="guestbook-list" id="guestbook-list" aria-live="polite"></div>
+                <h2 id="guestbook-title">Notiz hinzufügen</h2>
               </div>
               <button class="btn btn-secondary btn-dark" id="refresh-guestbook" type="button">Einträge laden</button>
             </div>
@@ -94,11 +95,11 @@
               <p class="form-message" id="guestbook-message" role="status" aria-live="polite"></p>
             </form>
 
-            <div class="guestbook-list" id="guestbook-list" aria-live="polite"></div>
+            
           </section>
 
           <section class="internal-note" aria-label="Sicherheitshinweis">
-            <strong>Hinweis:</strong> Dieser Passwortschutz ist nur clientseitig und nicht sicher. Das Passwort ist im JavaScript auffindbar. Für wirklich vertrauliche Daten ist GitHub Pages mit clientseitigem Passwortschutz nicht ausreichend.
+            <strong>Hinweis:</strong> Dieser Passwortschutz ist nur clientseitig und könnte ausgelesen werden.
           </section>
         </div>
       </div>

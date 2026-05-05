@@ -56,15 +56,15 @@ Einrichtung:
 6. **Ausführen als:** Ich.
 7. **Zugriff:** Jeder.
 8. Bereitstellung abschliessen und die Web-App-URL kopieren.
-9. Falls die Web-App neu deployed wird, die neue URL in `js/intern.js` bei `GUESTBOOK_API_URL` eintragen. Aktuell ist dort diese URL hinterlegt:
+9. URL in `js/intern.js` bei `GUESTBOOK_API_URL` eintragen:
 
 ```js
-const GUESTBOOK_API_URL = "https://script.google.com/macros/s/AKfycbyvXUlOpFNWZ3jejJhl1_KUgjzGbOrtUkW7AdZHympbjW7a5hTNzpwUyucxUyCpJnFF/exec";
+const GUESTBOOK_API_URL = "HIER_APPS_SCRIPT_WEB_APP_URL_EINFÜGEN";
 ```
 
-Nach einer Änderung der URL muss GitHub Pages neu deployed werden, damit das Notizbuch auf der Website aktiv bleibt.
+Nach dem Eintragen der URL muss GitHub Pages neu deployed werden, damit das Gästebuch auf der Website aktiv ist.
 
-Falls die Web-App-URL entfernt oder durch den Platzhalter ersetzt wird, zeigt die interne Seite einen neutralen Hinweis an und das Notizbuch-Formular bleibt deaktiviert.
+Solange die Web-App-URL noch nicht eingetragen ist, zeigt die interne Seite einen neutralen Hinweis an und das Gästebuch-Formular bleibt deaktiviert.
 
 ## 4. Sicherheitshinweis
 

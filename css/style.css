@@ -375,6 +375,8 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
 }
 
 .public-gigs-card {
+  display: grid;
+  gap: var(--space-2);
   margin-top: var(--space-4);
 }
 
@@ -382,13 +384,8 @@ p { margin: 0 0 var(--space-3); color: var(--color-text-soft); }
   margin-bottom: var(--space-2);
 }
 
-.public-gigs-list {
-  margin: 0;
-  padding-left: 1.25rem;
-}
-
-.public-gigs-list li + li {
-  margin-top: 0.4rem;
+.public-gigs-table {
+  min-width: 520px;
 }
 
 

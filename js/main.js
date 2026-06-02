@@ -157,6 +157,335 @@ if (galleryGrid && lightbox && lightboxImage) {
   });
 }
 
+
+// Public gig table from the published Google Sheet
+const PUBLIC_GIG_SHEET_ID = "1hOgHLZSz79FAb-wgghb69LDW8zpJLEEJdj6MnAR_Uc4";
+const PUBLIC_GIG_SHEET_GID = "0";
+const PUBLIC_GIG_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${PUBLIC_GIG_SHEET_ID}/export?format=csv&gid=${PUBLIC_GIG_SHEET_GID}`;
+const PUBLIC_GIG_SHEET_GVIZ_URL = `https://docs.google.com/spreadsheets/d/${PUBLIC_GIG_SHEET_ID}/gviz/tq?gid=${PUBLIC_GIG_SHEET_GID}`;
+const PUBLIC_GIG_LOAD_TIMEOUT_MS = 12000;
+const PUBLIC_GIG_VISIBLE_HEADERS = ["Datum", "Anlass", "Ort", "Auftritt"];
+const PUBLIC_GIG_VISIBILITY_HEADERS = [
+  "öffentlich",
+  "oeffentlich",
+  "public",
+  "website",
+  "anzeigen",
+  "sichtbarkeit"
+];
+const PUBLIC_GIG_VISIBLE_VALUES = ["1", "true", "wahr", "yes", "ja", "x", "öffentlich", "oeffentlich", "public"];
+const PUBLIC_GIG_HIDDEN_VALUES = ["0", "false", "falsch", "no", "nein", "privat", "nicht öffentlich", "nicht oeffentlich"];
+
+const publicGigsStatus = document.getElementById("public-gigs-status");
+const publicGigsTableWrap = document.getElementById("public-gigs-table-wrap");
+
+const normalizePublicGigToken = (value) => String(value ?? "")
+  .trim()
+  .toLowerCase()
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .replace(/[?*!:]/g, "")
+  .replace(/\s+/g, " ");
+
+const parsePublicGigCsv = (csvText) => {
+  const rows = [];
+  let row = [];
+  let value = "";
+  let insideQuotes = false;
+
+  for (let index = 0; index < csvText.length; index += 1) {
+    const char = csvText[index];
+    const nextChar = csvText[index + 1];
+
+    if (char === '"') {
+      if (insideQuotes && nextChar === '"') {
+        value += '"';
+        index += 1;
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+      continue;
+    }
+
+    if (char === "," && !insideQuotes) {
+      row.push(value);
+      value = "";
+      continue;
+    }
+
+    if ((char === "\n" || char === "\r") && !insideQuotes) {
+      if (char === "\r" && nextChar === "\n") index += 1;
+      row.push(value);
+      rows.push(row);
+      row = [];
+      value = "";
+      continue;
+    }
+
+    value += char;
+  }
+
+  if (value.length > 0 || row.length > 0) {
+    row.push(value);
+    rows.push(row);
+  }
+
+  return rows
+    .map((csvRow) => csvRow.map((cell) => cell.trim()))
+    .filter((csvRow) => csvRow.some((cell) => cell !== ""));
+};
+
+const fetchPublicGigCsvWithTimeout = async (url, timeoutMs) => {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(url, {
+      cache: "no-store",
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.text();
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+};
+
+const loadPublicGigRowsFromCsv = async () => parsePublicGigCsv(
+  await fetchPublicGigCsvWithTimeout(PUBLIC_GIG_SHEET_CSV_URL, PUBLIC_GIG_LOAD_TIMEOUT_MS)
+);
+
+const formatPublicGigDateValue = (date) => new Intl.DateTimeFormat("de-CH", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric"
+}).format(date);
+
+const getPublicGigGvizCellValue = (cell) => {
+  if (!cell) return "";
+  if (cell.f) return String(cell.f).trim();
+  if (cell.v instanceof Date) return formatPublicGigDateValue(cell.v);
+  return String(cell.v ?? "").trim();
+};
+
+const parsePublicGigGvizPayload = (payload) => {
+  const table = payload?.table;
+  if (!table || !Array.isArray(table.cols) || !Array.isArray(table.rows)) {
+    throw new Error("Die Google-Visualisierung enthielt keine Gig-Tabelle.");
+  }
+
+  const headers = table.cols.map((column) => String(column.label || column.id || "").trim());
+  const bodyRows = table.rows.map((row) => headers.map((_, cellIndex) => getPublicGigGvizCellValue(row.c?.[cellIndex])));
+  return [headers, ...bodyRows].filter((row) => row.some((cell) => cell !== ""));
+};
+
+const loadPublicGigRowsFromGviz = () => new Promise((resolve, reject) => {
+  const callbackName = `cervilaetzPublicGigs${Date.now()}${Math.random().toString(36).slice(2)}`;
+  const script = document.createElement("script");
+  const separator = PUBLIC_GIG_SHEET_GVIZ_URL.includes("?") ? "&" : "?";
+  let timeoutId;
+
+  const cleanup = () => {
+    window.clearTimeout(timeoutId);
+    delete window[callbackName];
+    script.parentNode?.removeChild(script);
+  };
+
+  window[callbackName] = (payload) => {
+    try {
+      const rows = parsePublicGigGvizPayload(payload);
+      cleanup();
+      resolve(rows);
+    } catch (error) {
+      cleanup();
+      reject(error);
+    }
+  };
+
+  script.onerror = () => {
+    cleanup();
+    reject(new Error("Die Google-Visualisierung konnte nicht geladen werden."));
+  };
+
+  timeoutId = window.setTimeout(() => {
+    cleanup();
+    reject(new Error("Zeitüberschreitung beim Laden der Google-Visualisierung."));
+  }, PUBLIC_GIG_LOAD_TIMEOUT_MS);
+
+  script.src = `${PUBLIC_GIG_SHEET_GVIZ_URL}${separator}tqx=responseHandler:${callbackName}`;
+  document.head.appendChild(script);
+});
+
+const rowsHavePublicGigDateHeader = (rows) => {
+  const [headers] = rows;
+  return Array.isArray(headers) && headers.some((header) => normalizePublicGigToken(header) === "datum");
+};
+
+const loadPublicGigRows = async () => {
+  try {
+    const rows = await loadPublicGigRowsFromCsv();
+    if (!rowsHavePublicGigDateHeader(rows)) {
+      throw new Error("Die CSV-Antwort enthielt keine Gig-Daten.");
+    }
+    return rows;
+  } catch (error) {
+    return loadPublicGigRowsFromGviz();
+  }
+};
+
+const parsePublicGigDate = (rawDate) => {
+  const value = String(rawDate ?? "").trim();
+  if (!value) return null;
+
+  const swissDate = value.match(/^(\d{1,2})[.\-/](\d{1,2})[.\-/](\d{2,4})(?:\s+.*)?$/);
+  if (swissDate) {
+    const day = Number(swissDate[1]);
+    const month = Number(swissDate[2]) - 1;
+    const year = Number(swissDate[3].length === 2 ? `20${swissDate[3]}` : swissDate[3]);
+    const parsed = new Date(year, month, day);
+    if (parsed.getFullYear() === year && parsed.getMonth() === month && parsed.getDate() === day) {
+      return parsed;
+    }
+  }
+
+  const isoDate = value.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (isoDate) {
+    const year = Number(isoDate[1]);
+    const month = Number(isoDate[2]) - 1;
+    const day = Number(isoDate[3]);
+    const parsed = new Date(year, month, day);
+    if (parsed.getFullYear() === year && parsed.getMonth() === month && parsed.getDate() === day) {
+      return parsed;
+    }
+  }
+
+  const fallback = new Date(value);
+  return Number.isNaN(fallback.getTime()) ? null : fallback;
+};
+
+const getPublicGigStartOfToday = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+};
+
+const setPublicGigsStatus = (message, type = "") => {
+  if (!publicGigsStatus) return;
+  publicGigsStatus.textContent = message;
+  publicGigsStatus.className = `table-status ${type}`.trim();
+};
+
+const getPublicGigColumnIndex = (headers, headerName) => {
+  const normalizedHeaderName = normalizePublicGigToken(headerName);
+  return headers.findIndex((header) => normalizePublicGigToken(header) === normalizedHeaderName);
+};
+
+const getPublicGigVisibilityColumnIndex = (headers) => headers.findIndex((header) => {
+  const normalizedHeader = normalizePublicGigToken(header);
+  return PUBLIC_GIG_VISIBILITY_HEADERS.some((candidate) => normalizedHeader.includes(normalizePublicGigToken(candidate)));
+});
+
+const isPublicGigRowVisible = (row, visibilityColumnIndex) => {
+  if (visibilityColumnIndex === -1) return false;
+  const value = normalizePublicGigToken(row[visibilityColumnIndex]);
+  if (!value || PUBLIC_GIG_HIDDEN_VALUES.some((hiddenValue) => value.includes(hiddenValue))) return false;
+  return PUBLIC_GIG_VISIBLE_VALUES.includes(value) || value.includes("offentlich") || value.includes("public");
+};
+
+const renderPublicGigTable = (rows) => {
+  if (!publicGigsTableWrap) return 0;
+  publicGigsTableWrap.replaceChildren();
+
+  const [headers, ...bodyRows] = rows;
+  const dateColumnIndex = getPublicGigColumnIndex(headers, "Datum");
+  const visibilityColumnIndex = getPublicGigVisibilityColumnIndex(headers);
+  const visibleColumnIndexes = PUBLIC_GIG_VISIBLE_HEADERS.map((header) => getPublicGigColumnIndex(headers, header));
+
+  if (dateColumnIndex === -1) {
+    throw new Error('Die Spalte "Datum" wurde im Gig-Sheet nicht gefunden.');
+  }
+
+  if (visibilityColumnIndex === -1) {
+    throw new Error("Im Gig-Sheet wurde keine Spalte für öffentliche Auftritte gefunden.");
+  }
+
+  if (visibleColumnIndexes.some((index) => index === -1)) {
+    throw new Error("Im Gig-Sheet fehlen eine oder mehrere öffentliche Spalten.");
+  }
+
+  const today = getPublicGigStartOfToday();
+  const upcomingPublicRows = bodyRows
+    .map((row, originalIndex) => ({
+      row,
+      originalIndex,
+      date: parsePublicGigDate(row[dateColumnIndex])
+    }))
+    .filter((entry) => entry.date && entry.date >= today && isPublicGigRowVisible(entry.row, visibilityColumnIndex))
+    .sort((a, b) => a.date - b.date || a.originalIndex - b.originalIndex)
+    .map((entry) => visibleColumnIndexes.map((columnIndex) => entry.row[columnIndex] ?? ""));
+
+  if (upcomingPublicRows.length === 0) {
+    publicGigsTableWrap.hidden = true;
+    return 0;
+  }
+
+  const table = document.createElement("table");
+  table.className = "internal-table public-gigs-table";
+
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  PUBLIC_GIG_VISIBLE_HEADERS.forEach((header) => {
+    const th = document.createElement("th");
+    th.textContent = header;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  upcomingPublicRows.forEach((row) => {
+    const tr = document.createElement("tr");
+    row.forEach((cell) => {
+      const td = document.createElement("td");
+      td.textContent = cell;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+
+  publicGigsTableWrap.appendChild(table);
+  publicGigsTableWrap.hidden = false;
+  return upcomingPublicRows.length;
+};
+
+const loadPublicGigs = async () => {
+  if (!publicGigsStatus || !publicGigsTableWrap) return;
+  setPublicGigsStatus("Lade öffentliche Auftritte...", "loading");
+  publicGigsTableWrap.hidden = true;
+
+  try {
+    const rows = await loadPublicGigRows();
+
+    if (rows.length < 1) {
+      setPublicGigsStatus("Im Google Sheet wurden noch keine Auftritte gefunden.");
+      return;
+    }
+
+    const count = renderPublicGigTable(rows);
+    if (count === 0) {
+      setPublicGigsStatus("Aktuell sind keine kommenden öffentlichen Auftritte geplant.");
+      return;
+    }
+
+    setPublicGigsStatus(`${count} kommende öffentliche Auftritte geladen.`, "success");
+  } catch (error) {
+    setPublicGigsStatus("Die öffentlichen Auftritte konnten nicht geladen werden. Bitte später erneut versuchen.", "error");
+  }
+};
+
+loadPublicGigs();
+
 // Math captcha for booking form
 const bookingForm = document.querySelector(".booking-form");
 

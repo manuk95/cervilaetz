@@ -159,7 +159,11 @@ if (galleryGrid && lightbox && lightboxImage) {
 
 
 // Public gig table from the published Google Sheet
-const PUBLIC_GIG_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1hOgHLZSz79FAb-wgghb69LDW8zpJLEEJdj6MnAR_Uc4/export?format=csv&gid=0";
+const PUBLIC_GIG_SHEET_ID = "1hOgHLZSz79FAb-wgghb69LDW8zpJLEEJdj6MnAR_Uc4";
+const PUBLIC_GIG_SHEET_GID = "0";
+const PUBLIC_GIG_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${PUBLIC_GIG_SHEET_ID}/export?format=csv&gid=${PUBLIC_GIG_SHEET_GID}`;
+const PUBLIC_GIG_SHEET_GVIZ_URL = `https://docs.google.com/spreadsheets/d/${PUBLIC_GIG_SHEET_ID}/gviz/tq?gid=${PUBLIC_GIG_SHEET_GID}`;
+const PUBLIC_GIG_LOAD_TIMEOUT_MS = 12000;
 const PUBLIC_GIG_VISIBLE_HEADERS = ["Datum", "Anlass", "Ort", "Auftritt"];
 const PUBLIC_GIG_VISIBILITY_HEADERS = [
   "öffentlich",
@@ -229,6 +233,104 @@ const parsePublicGigCsv = (csvText) => {
   return rows
     .map((csvRow) => csvRow.map((cell) => cell.trim()))
     .filter((csvRow) => csvRow.some((cell) => cell !== ""));
+};
+
+const fetchPublicGigCsvWithTimeout = async (url, timeoutMs) => {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(url, {
+      cache: "no-store",
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.text();
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+};
+
+const loadPublicGigRowsFromCsv = async () => parsePublicGigCsv(
+  await fetchPublicGigCsvWithTimeout(PUBLIC_GIG_SHEET_CSV_URL, PUBLIC_GIG_LOAD_TIMEOUT_MS)
+);
+
+const formatPublicGigDateValue = (date) => new Intl.DateTimeFormat("de-CH", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric"
+}).format(date);
+
+const getPublicGigGvizCellValue = (cell) => {
+  if (!cell) return "";
+  if (cell.f) return String(cell.f).trim();
+  if (cell.v instanceof Date) return formatPublicGigDateValue(cell.v);
+  return String(cell.v ?? "").trim();
+};
+
+const parsePublicGigGvizPayload = (payload) => {
+  const table = payload?.table;
+  if (!table || !Array.isArray(table.cols) || !Array.isArray(table.rows)) {
+    throw new Error("Die Google-Visualisierung enthielt keine Gig-Tabelle.");
+  }
+
+  const headers = table.cols.map((column) => String(column.label || column.id || "").trim());
+  const bodyRows = table.rows.map((row) => headers.map((_, cellIndex) => getPublicGigGvizCellValue(row.c?.[cellIndex])));
+  return [headers, ...bodyRows].filter((row) => row.some((cell) => cell !== ""));
+};
+
+const loadPublicGigRowsFromGviz = () => new Promise((resolve, reject) => {
+  const callbackName = `cervilaetzPublicGigs${Date.now()}${Math.random().toString(36).slice(2)}`;
+  const script = document.createElement("script");
+  const separator = PUBLIC_GIG_SHEET_GVIZ_URL.includes("?") ? "&" : "?";
+  let timeoutId;
+
+  const cleanup = () => {
+    window.clearTimeout(timeoutId);
+    delete window[callbackName];
+    script.parentNode?.removeChild(script);
+  };
+
+  window[callbackName] = (payload) => {
+    try {
+      const rows = parsePublicGigGvizPayload(payload);
+      cleanup();
+      resolve(rows);
+    } catch (error) {
+      cleanup();
+      reject(error);
+    }
+  };
+
+  script.onerror = () => {
+    cleanup();
+    reject(new Error("Die Google-Visualisierung konnte nicht geladen werden."));
+  };
+
+  timeoutId = window.setTimeout(() => {
+    cleanup();
+    reject(new Error("Zeitüberschreitung beim Laden der Google-Visualisierung."));
+  }, PUBLIC_GIG_LOAD_TIMEOUT_MS);
+
+  script.src = `${PUBLIC_GIG_SHEET_GVIZ_URL}${separator}tqx=responseHandler:${callbackName}`;
+  document.head.appendChild(script);
+});
+
+const rowsHavePublicGigDateHeader = (rows) => {
+  const [headers] = rows;
+  return Array.isArray(headers) && headers.some((header) => normalizePublicGigToken(header) === "datum");
+};
+
+const loadPublicGigRows = async () => {
+  try {
+    const rows = await loadPublicGigRowsFromCsv();
+    if (!rowsHavePublicGigDateHeader(rows)) {
+      throw new Error("Die CSV-Antwort enthielt keine Gig-Daten.");
+    }
+    return rows;
+  } catch (error) {
+    return loadPublicGigRowsFromGviz();
+  }
 };
 
 const parsePublicGigDate = (rawDate) => {
@@ -363,11 +465,7 @@ const loadPublicGigs = async () => {
   publicGigsTableWrap.hidden = true;
 
   try {
-    const response = await fetch(PUBLIC_GIG_SHEET_CSV_URL, { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const csvText = await response.text();
-    const rows = parsePublicGigCsv(csvText);
+    const rows = await loadPublicGigRows();
 
     if (rows.length < 1) {
       setPublicGigsStatus("Im Google Sheet wurden noch keine Auftritte gefunden.");

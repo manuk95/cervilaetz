@@ -1,4 +1,4 @@
-.modern-page { background: var(--color-bg); }
+.modern-page { --event-red: #b43d2f; --event-gold: #d9a552; --event-ink: #171310; background: var(--color-bg); }
 
 .modern-header { position: absolute; }
 .modern-nav { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -6,13 +6,17 @@
 .modern-nav-links > a:not(.btn) { display: none; color: var(--color-offwhite); font-weight: 600; }
 .modern-nav-links .btn { padding: .65rem 1rem; }
 
-.modern-hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; color: var(--color-offwhite); overflow: hidden; }
+.modern-hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; color: var(--color-offwhite); overflow: hidden; background: var(--event-ink); isolation: isolate; }
 .modern-hero-media, .modern-hero-overlay { position: absolute; inset: 0; }
-.modern-hero-media { background: url("../images/152_10y-jubi_gesamt_sitzend.jpg") 58% center / cover no-repeat; transform: scale(1.01); }
-.modern-hero-overlay { background: linear-gradient(180deg, rgba(21,19,18,.35) 0%, rgba(21,19,18,.76) 48%, rgba(21,19,18,.97) 100%); }
+.modern-hero-media { inset: -18vmax -28vmax auto auto; width: 85vmax; height: 85vmax; border: clamp(40px, 8vw, 120px) solid var(--event-red); border-radius: 50%; opacity: .88; }
+.modern-hero-media::before, .modern-hero-media::after { content: ""; position: absolute; border-radius: 50%; }
+.modern-hero-media::before { inset: 12%; border: clamp(18px, 4vw, 60px) solid var(--event-gold); }
+.modern-hero-media::after { inset: 29%; border: 2px solid rgba(255,255,255,.35); background: radial-gradient(circle, transparent 0 8%, var(--event-red) 8.5% 10%, transparent 10.5% 100%); }
+.modern-hero-overlay { background: radial-gradient(circle at 76% 12%, transparent 0 18%, rgba(23,19,16,.14) 45%, rgba(23,19,16,.9) 78%), linear-gradient(110deg, rgba(23,19,16,.98) 0 30%, transparent 72%); }
+.modern-hero::after { content: "LIVE · BRASS · LUZERN · 03 10 26"; position: absolute; right: -2rem; bottom: 10%; z-index: 0; color: rgba(255,255,255,.12); font-size: clamp(1rem, 2vw, 1.6rem); font-weight: 700; letter-spacing: .3em; writing-mode: vertical-rl; }
 .modern-hero-content { position: relative; z-index: 1; padding-top: 7rem; padding-bottom: max(3rem, env(safe-area-inset-bottom)); }
 .event-kicker { margin-bottom: .5rem; color: var(--color-accent); font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-.modern-hero h1 { margin-bottom: 1rem; color: var(--color-offwhite); font-size: clamp(3.65rem, 19vw, 7.8rem); line-height: .72; letter-spacing: -.045em; }
+.modern-hero h1 { margin-bottom: 1.25rem; color: var(--color-offwhite); font-size: clamp(3.65rem, 19vw, 7.8rem); line-height: .72; letter-spacing: -.045em; text-shadow: 0 10px 45px rgba(0,0,0,.28); }
 .hero-event-data { margin-bottom: 1.25rem; border-left: 2px solid var(--color-accent); padding-left: 1rem; }
 .hero-event-data p { margin-bottom: .3rem; color: var(--color-offwhite); font-size: .94rem; line-height: 1.45; }
 .hero-event-data p:first-child { font-size: 1rem; }
@@ -31,7 +35,8 @@
 .band-tile { position: relative; min-height: 150px; display: flex; align-items: flex-end; padding: 1.25rem; overflow: hidden; border: 1px solid rgba(219,212,205,.18); border-radius: var(--radius-md); background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.015)); }
 .band-tile span { position: absolute; top: .9rem; right: 1rem; color: var(--color-accent); font-size: .7rem; font-weight: 700; letter-spacing: .14em; }
 .band-tile h3 { margin: 0; color: var(--color-offwhite); font-size: clamp(1.9rem, 9vw, 3.4rem); line-height: .85; letter-spacing: -.02em; }
-.cervilaetz-tile { background: linear-gradient(145deg, rgba(151,102,62,.54), rgba(255,255,255,.025)); }
+.band-tile::before { content: ""; position: absolute; width: 8rem; height: 8rem; top: -4rem; left: -4rem; border: 1px solid rgba(217,165,82,.28); border-radius: 50%; transition: transform var(--transition); }
+.band-tile:hover::before { transform: scale(1.25); }
 
 .copy-narrow { max-width: 760px; }
 .event-copy p:not(.overline) { font-size: 1.05rem; }
@@ -54,11 +59,18 @@
 .location-btn { border-color: var(--color-wood); color: var(--color-wood-dark); }
 .location-btn:hover, .location-btn:focus-visible { background: var(--color-wood); color: #fff; }
 
-.closing-cta { padding: 5rem 0; background: linear-gradient(120deg, rgba(21,19,18,.94), rgba(60,47,38,.92)), url("../images/032_10y-jubi_gesamt_hinten.jpg") center / cover; color: var(--color-offwhite); text-align: center; }
+.closing-cta { position: relative; padding: 6rem 0; overflow: hidden; background: var(--event-red); color: var(--color-offwhite); text-align: center; }
+.closing-cta::before { content: ""; position: absolute; width: 35rem; height: 35rem; top: 50%; left: 50%; border: 5rem solid rgba(23,19,16,.12); border-radius: 50%; transform: translate(-50%,-50%); }
+.closing-cta .container { position: relative; }
 .closing-cta .overline { color: var(--color-accent); }
 .closing-cta h2 { color: var(--color-offwhite); font-size: clamp(3.5rem, 17vw, 7rem); line-height: .75; letter-spacing: -.04em; }
 .mobile-ticket-bar { display: flex; position: fixed; z-index: 60; right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); left: .75rem; min-height: 52px; align-items: center; justify-content: center; gap: .5rem; border-radius: 999px; background: var(--color-accent); color: white; font-weight: 700; box-shadow: 0 10px 30px rgba(21,19,18,.35); }
-.modern-page .site-footer { padding-bottom: 6rem; }
+.event-footer { padding: 3.5rem 0 6.5rem; background: var(--event-ink); color: var(--color-offwhite); }
+.event-footer-inner { display: grid; gap: 1.5rem; }
+.event-footer-title { font-family: var(--font-heading); font-size: clamp(2rem, 7vw, 4rem); font-weight: 700; line-height: .85; }
+.event-footer p { margin: 0; color: var(--color-wood-light); }
+.event-footer nav { display: flex; flex-wrap: wrap; gap: .65rem 1.25rem; font-size: .8rem; }
+.event-footer nav a { color: var(--color-offwhite); text-decoration: underline; text-decoration-color: rgba(255,255,255,.25); text-underline-offset: .25em; }
 
 @media (min-width: 560px) {
   .mobile-break { display: none; }
@@ -69,8 +81,7 @@
 @media (min-width: 760px) {
   .modern-header { position: fixed; }
   .modern-hero { align-items: center; min-height: 760px; }
-  .modern-hero-media { background-position: center 35%; }
-  .modern-hero-overlay { background: linear-gradient(90deg, rgba(21,19,18,.94) 0%, rgba(21,19,18,.66) 48%, rgba(21,19,18,.25) 100%); }
+  .modern-hero-media { inset: -31vmax -22vmax auto auto; width: 78vmax; height: 78vmax; }
   .modern-hero-content { padding: 9rem 0 6rem; }
   .modern-hero h1 { font-size: clamp(5rem, 11vw, 8.5rem); }
   .facts-grid { grid-template-columns: repeat(5, minmax(0,1fr)); gap: 0; }
@@ -84,7 +95,9 @@
   .ticket-prices { margin: 0; }
   .location-grid { grid-template-columns: 1fr 1fr; }
   .mobile-ticket-bar { display: none; }
-  .modern-page .site-footer { padding-bottom: var(--space-4); }
+  .event-footer { padding-bottom: 3.5rem; }
+  .event-footer-inner { grid-template-columns: 1.2fr 1fr 1.2fr; align-items: end; }
+  .event-footer nav { justify-content: flex-end; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

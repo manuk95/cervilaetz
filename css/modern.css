@@ -1,0 +1,90 @@
+.modern-page { background: var(--color-bg); }
+
+.modern-header { position: absolute; }
+.modern-nav { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.modern-nav-links { display: flex; align-items: center; gap: 1rem; }
+.modern-nav-links > a:not(.btn) { display: none; color: var(--color-offwhite); font-weight: 600; }
+.modern-nav-links .btn { padding: .65rem 1rem; }
+
+.modern-hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; color: var(--color-offwhite); overflow: hidden; }
+.modern-hero-media, .modern-hero-overlay { position: absolute; inset: 0; }
+.modern-hero-media { background: url("../images/152_10y-jubi_gesamt_sitzend.jpg") 58% center / cover no-repeat; transform: scale(1.01); }
+.modern-hero-overlay { background: linear-gradient(180deg, rgba(21,19,18,.35) 0%, rgba(21,19,18,.76) 48%, rgba(21,19,18,.97) 100%); }
+.modern-hero-content { position: relative; z-index: 1; padding-top: 7rem; padding-bottom: max(3rem, env(safe-area-inset-bottom)); }
+.event-kicker { margin-bottom: .5rem; color: var(--color-accent); font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.modern-hero h1 { margin-bottom: 1rem; color: var(--color-offwhite); font-size: clamp(3.65rem, 19vw, 7.8rem); line-height: .72; letter-spacing: -.045em; }
+.hero-event-data { margin-bottom: 1.25rem; border-left: 2px solid var(--color-accent); padding-left: 1rem; }
+.hero-event-data p { margin-bottom: .3rem; color: var(--color-offwhite); font-size: .94rem; line-height: 1.45; }
+.hero-event-data p:first-child { font-size: 1rem; }
+.hero-times { padding-top: .2rem; opacity: .82; }
+.event-primary-btn { min-height: 52px; padding-inline: 1.65rem; font-size: 1rem; }
+
+.event-overview { padding-top: 3.25rem; }
+.facts-grid { display: grid; margin: 1rem 0 1.75rem; border-top: 1px solid var(--color-border); }
+.facts-grid article { padding: 1rem 0; border-bottom: 1px solid var(--color-border); }
+.facts-grid h3 { margin: 0 0 .2rem; color: var(--color-olive); font-family: var(--font-body); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; }
+.facts-grid p { margin: 0; font-size: .96rem; line-height: 1.5; }
+
+.bands-section .overline { color: var(--color-accent); }
+.bands-section h2 { margin-bottom: 1.75rem; }
+.band-grid { display: grid; gap: .75rem; }
+.band-tile { position: relative; min-height: 150px; display: flex; align-items: flex-end; padding: 1.25rem; overflow: hidden; border: 1px solid rgba(219,212,205,.18); border-radius: var(--radius-md); background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.015)); }
+.band-tile span { position: absolute; top: .9rem; right: 1rem; color: var(--color-accent); font-size: .7rem; font-weight: 700; letter-spacing: .14em; }
+.band-tile h3 { margin: 0; color: var(--color-offwhite); font-size: clamp(1.9rem, 9vw, 3.4rem); line-height: .85; letter-spacing: -.02em; }
+.cervilaetz-tile { background: linear-gradient(145deg, rgba(151,102,62,.54), rgba(255,255,255,.025)); }
+
+.copy-narrow { max-width: 760px; }
+.event-copy p:not(.overline) { font-size: 1.05rem; }
+.ticket-section { padding-top: 0; }
+.ticket-card { padding: 1.5rem; border-radius: var(--radius-lg); background: var(--color-wood-dark); box-shadow: var(--shadow-md); }
+.ticket-card h2, .ticket-card p { color: var(--color-offwhite); }
+.ticket-card .overline { color: var(--color-accent); }
+.ticket-prices { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: 1rem 0 1.5rem; }
+.ticket-prices p { margin: 0; }
+.ticket-prices span, .ticket-prices strong { display: block; }
+.ticket-prices span { color: var(--color-wood-light); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+.ticket-prices strong { font-size: 1.05rem; }
+.ticket-action { display: grid; gap: .45rem; }
+.ticket-action small { color: var(--color-wood-light); text-align: center; }
+
+.location-section { background: var(--color-surface-alt); }
+.location-grid { display: grid; gap: 1.5rem; }
+.location-grid h2 { line-height: .9; }
+.location-details address { margin-bottom: 1rem; color: var(--color-text-soft); font-style: normal; }
+.location-btn { border-color: var(--color-wood); color: var(--color-wood-dark); }
+.location-btn:hover, .location-btn:focus-visible { background: var(--color-wood); color: #fff; }
+
+.closing-cta { padding: 5rem 0; background: linear-gradient(120deg, rgba(21,19,18,.94), rgba(60,47,38,.92)), url("../images/032_10y-jubi_gesamt_hinten.jpg") center / cover; color: var(--color-offwhite); text-align: center; }
+.closing-cta .overline { color: var(--color-accent); }
+.closing-cta h2 { color: var(--color-offwhite); font-size: clamp(3.5rem, 17vw, 7rem); line-height: .75; letter-spacing: -.04em; }
+.mobile-ticket-bar { display: flex; position: fixed; z-index: 60; right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); left: .75rem; min-height: 52px; align-items: center; justify-content: center; gap: .5rem; border-radius: 999px; background: var(--color-accent); color: white; font-weight: 700; box-shadow: 0 10px 30px rgba(21,19,18,.35); }
+.modern-page .site-footer { padding-bottom: 6rem; }
+
+@media (min-width: 560px) {
+  .mobile-break { display: none; }
+  .facts-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 1.5rem; }
+  .modern-nav-links > a:not(.btn) { display: inline; }
+}
+
+@media (min-width: 760px) {
+  .modern-header { position: fixed; }
+  .modern-hero { align-items: center; min-height: 760px; }
+  .modern-hero-media { background-position: center 35%; }
+  .modern-hero-overlay { background: linear-gradient(90deg, rgba(21,19,18,.94) 0%, rgba(21,19,18,.66) 48%, rgba(21,19,18,.25) 100%); }
+  .modern-hero-content { padding: 9rem 0 6rem; }
+  .modern-hero h1 { font-size: clamp(5rem, 11vw, 8.5rem); }
+  .facts-grid { grid-template-columns: repeat(5, minmax(0,1fr)); gap: 0; }
+  .facts-grid article { padding: 1rem; border-right: 1px solid var(--color-border); }
+  .facts-grid article:first-child { padding-left: 0; }
+  .facts-grid article:last-child { border-right: 0; }
+  .band-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .band-tile { min-height: 300px; }
+  .band-tile h3 { font-size: clamp(2rem, 4.5vw, 3.5rem); }
+  .ticket-card { display: grid; grid-template-columns: 1.2fr 1fr 1fr; align-items: center; gap: 2rem; padding: 2.5rem; }
+  .ticket-prices { margin: 0; }
+  .location-grid { grid-template-columns: 1fr 1fr; }
+  .mobile-ticket-bar { display: none; }
+  .modern-page .site-footer { padding-bottom: var(--space-4); }
+}
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

@@ -32,11 +32,15 @@
 .bands-section .overline { color: var(--color-accent); }
 .bands-section h2 { margin-bottom: 1.75rem; }
 .band-grid { display: grid; gap: .75rem; }
-.band-tile { position: relative; min-height: 150px; display: flex; align-items: flex-end; padding: 1.25rem; overflow: hidden; border: 1px solid rgba(219,212,205,.18); border-radius: var(--radius-md); background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.015)); }
-.band-tile span { position: absolute; top: .9rem; right: 1rem; color: var(--color-accent); font-size: .7rem; font-weight: 700; letter-spacing: .14em; }
+.band-tile { position: relative; min-height: 280px; overflow: hidden; border: 1px solid rgba(219,212,205,.18); border-radius: var(--radius-md); background: var(--event-ink); isolation: isolate; }
+.band-tile > img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform var(--transition); }
+.band-tile::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(23,19,16,.08) 20%, rgba(23,19,16,.88) 100%); }
+.band-tile-content { min-height: inherit; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 1.25rem; }
+.band-tile-content > span { position: absolute; top: .9rem; right: 1rem; color: var(--color-accent); font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-shadow: 0 1px 8px rgba(0,0,0,.75); }
 .band-tile h3 { margin: 0; color: var(--color-offwhite); font-size: clamp(1.9rem, 9vw, 3.4rem); line-height: .85; letter-spacing: -.02em; }
-.band-tile::before { content: ""; position: absolute; width: 8rem; height: 8rem; top: -4rem; left: -4rem; border: 1px solid rgba(217,165,82,.28); border-radius: 50%; transition: transform var(--transition); }
-.band-tile:hover::before { transform: scale(1.25); }
+.band-tile a { margin-top: .9rem; color: var(--color-offwhite); font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: .3em; }
+.band-tile a:hover, .band-tile a:focus-visible { color: var(--color-accent); }
+.band-tile:hover > img { transform: scale(1.025); }
 
 .copy-narrow { max-width: 760px; }
 .event-copy p:not(.overline) { font-size: 1.05rem; }
@@ -89,7 +93,7 @@
   .facts-grid article:first-child { padding-left: 0; }
   .facts-grid article:last-child { border-right: 0; }
   .band-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-  .band-tile { min-height: 300px; }
+  .band-tile { min-height: 420px; }
   .band-tile h3 { font-size: clamp(2rem, 4.5vw, 3.5rem); }
   .ticket-card { display: grid; grid-template-columns: 1.2fr 1fr 1fr; align-items: center; gap: 2rem; padding: 2.5rem; }
   .ticket-prices { margin: 0; }

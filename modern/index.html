@@ -23,6 +23,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/modern.css">
+  <style>
+    @media (min-width: 760px) {
+      .mobile-ticket-bar {
+        display: flex;
+        left: auto;
+        right: 1.5rem;
+        bottom: 1.5rem;
+        width: auto;
+        padding-inline: 1.5rem;
+      }
+
+      .ticket-card {
+        grid-template-columns: 1.2fr 1fr;
+      }
+    }
+  </style>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -59,7 +75,6 @@
       <div class="modern-nav-links">
         <a href="#bands">Bands</a>
         <a href="#location">Ort</a>
-        <a class="btn btn-primary" href="https://eventfrog.ch/de/p/konzert/blasmusik/brass-karussell-7489713260993744671.html">Tickets</a>
       </div>
     </nav>
   </header>
@@ -76,7 +91,6 @@
           <p>Moderne Bar &amp; Karussell<br>Luzern</p>
           <p class="hero-times">Türöffnung 18:30 Uhr <span aria-hidden="true">·</span><br class="mobile-break"> Konzertbeginn 19:00 Uhr</p>
         </div>
-        <a class="btn btn-primary event-primary-btn" href="https://eventfrog.ch/de/p/konzert/blasmusik/brass-karussell-7489713260993744671.html">Tickets sichern <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
@@ -91,7 +105,6 @@
           <article><h3>Konzert</h3><p>19:00–22:00 Uhr</p></article>
           <article><h3>Tickets</h3><p>Vorverkauf ab CHF 15.–<br>Abendkasse CHF 20.–</p></article>
         </div>
-        <a class="btn btn-primary event-primary-btn" href="https://eventfrog.ch/de/p/konzert/blasmusik/brass-karussell-7489713260993744671.html">Tickets sichern <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
@@ -118,14 +131,10 @@
 
     <section class="section ticket-section" id="tickets" aria-labelledby="ticket-title">
       <div class="container ticket-card">
-        <div><p class="overline">Tickets</p><h2 id="ticket-title">Direkt zum Vorverkauf</h2></div>
+        <div><p class="overline">Tickets</p><h2 id="ticket-title">Vorverkauf</h2></div>
         <div class="ticket-prices">
           <p><span>Vorverkauf</span><strong>ab CHF 15.–</strong></p>
           <p><span>Abendkasse</span><strong>CHF 20.–</strong></p>
-        </div>
-        <div class="ticket-action">
-          <a class="btn btn-primary event-primary-btn" href="https://eventfrog.ch/de/p/konzert/blasmusik/brass-karussell-7489713260993744671.html">Tickets jetzt kaufen <span aria-hidden="true">→</span></a>
-          <small>Ticketverkauf über Eventfrog</small>
         </div>
       </div>
     </section>
@@ -141,14 +150,6 @@
           <p><strong>Samstag, 03. Oktober 2026</strong><br>Türöffnung 18:30 Uhr<br>Konzertbeginn 19:00 Uhr</p>
           <a class="btn location-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Moderne+Bar+%26+Karussell%2C+Pilatusstrasse+21%2C+6003+Luzern" target="_blank" rel="noopener noreferrer">Route anzeigen <span aria-hidden="true">↗</span></a>
         </div>
-      </div>
-    </section>
-
-    <section class="closing-cta" aria-labelledby="closing-title">
-      <div class="container">
-        <p class="overline">03. Oktober 2026 · Luzern</p>
-        <h2 id="closing-title">BRASS<br>KARUSSELL</h2>
-        <a class="btn btn-primary event-primary-btn" href="https://eventfrog.ch/de/p/konzert/blasmusik/brass-karussell-7489713260993744671.html">Tickets sichern <span aria-hidden="true">→</span></a>
       </div>
     </section>
   </main>

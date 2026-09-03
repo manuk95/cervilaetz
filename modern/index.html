@@ -24,6 +24,30 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/modern.css">
   <style>
+    .location-logo-wrap {
+      width: min(100%, 430px);
+      margin: 1.5rem 0;
+      padding: 1.15rem 1.35rem;
+      border-radius: 14px;
+      background: var(--event-ink);
+    }
+
+    .location-logo {
+      width: 100%;
+      height: auto;
+    }
+
+    .location-copy {
+      max-width: 640px;
+      margin-bottom: 0;
+    }
+
+    .location-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+
     @media (min-width: 760px) {
       .mobile-ticket-bar {
         display: flex;
@@ -36,6 +60,16 @@
 
       .ticket-card {
         grid-template-columns: 1.2fr 1fr;
+      }
+
+      .facts-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1050px) {
+      .facts-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
       }
     }
   </style>

@@ -27,27 +27,38 @@
   <link rel="stylesheet" href="css/style.css">
   <style>
     .modern-promo-banner {
-      background: #171310;
-      border-top: 1px solid rgba(255,255,255,.08);
-      border-bottom: 1px solid rgba(255,255,255,.08);
+      position: fixed;
+      z-index: 60;
+      right: .75rem;
+      bottom: max(.75rem, env(safe-area-inset-bottom));
+      left: .75rem;
+      background: transparent;
+      border: 0;
     }
 
-    .modern-promo-banner a {
-      min-height: 72px;
+    .modern-promo-banner a.container {
+      width: auto;
+      max-width: none;
+      min-height: 52px;
+      margin: 0;
+      padding: 0 1.5rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+      justify-content: center;
+      gap: .55rem;
+      border-radius: 999px;
+      background: var(--color-accent);
       color: #fff;
       text-decoration: none;
       font-weight: 700;
-      letter-spacing: .04em;
+      letter-spacing: .02em;
+      box-shadow: 0 10px 30px rgba(21,19,18,.35);
     }
 
     .modern-promo-banner a::after {
       content: "→";
-      color: var(--color-accent);
-      font-size: 1.6rem;
+      color: #fff;
+      font-size: 1.15rem;
       transition: transform var(--transition);
     }
 
@@ -57,8 +68,16 @@
     }
 
     .modern-promo-banner strong {
-      color: var(--color-accent);
-      font-size: clamp(1.05rem, 3vw, 1.35rem);
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    @media (min-width: 760px) {
+      .modern-promo-banner {
+        left: auto;
+        right: 1.5rem;
+        bottom: 1.5rem;
+      }
     }
   </style>
   <script type="application/ld+json">
